@@ -37,8 +37,10 @@ class App extends Component {
         return item.objectID !== id;
       }
      */
-    const isNotId = item => item.objectID !== id;
-    const updatedList = this.state.list.filter(isNotId);
+    // const isNotId = item => item.objectID !== id;
+    const updatedList = this.state.list.filter(item => {
+      return item.objectID !== id;
+    });
     this.setState({list: updatedList});
   }
 
