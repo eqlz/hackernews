@@ -21,11 +21,13 @@ const list = [
 ];
 
 // readable way to write isSearched()
-// function isSearched(searchTerm) {
-//   return function(item) {
-//     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
-//   }
-// }
+/*
+function isSearched(searchTerm) {
+  return function(item) {
+    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  }
+}
+/**/
 
 // concise way to write isSearched()
 const isSearched = searchTerm => item =>
@@ -56,15 +58,22 @@ class App extends Component {
   }
 
   render() {
+    const {
+      list,
+      searchTerm
+    } = this.state;
+
     return (
       <div className="App">
-      <form action="">
-        <input
-          type="text"
-          onChange={this.onSearchChange}
-        />
-      </form>
-        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => {
+        <form action="">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={this.onSearchChange}
+          />
+        </form>
+
+        {list.filter(isSearched(searchTerm)).map(item => {
           return (
             <div key={item.objectID}>
               <span>
