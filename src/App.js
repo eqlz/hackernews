@@ -47,14 +47,14 @@ class App extends Component {
   }
 
   onSearchChange(event) {
-    this.setState({searchTerm: event.target.value});
+    this.setState({ searchTerm: event.target.value });
   }
 
   onDismiss(id) {
     const updatedList = this.state.list.filter(item => {
       return item.objectID !== id;
     });
-    this.setState({list: updatedList});
+    this.setState({ list: updatedList });
   }
 
   render() {
@@ -65,34 +65,66 @@ class App extends Component {
 
     return (
       <div className="App">
-        <form action="">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={this.onSearchChange}
-          />
-        </form>
+        <Search
+          value={searchTerm}
+          onChange={this.onSearchChange}
+        />
 
-        {list.filter(isSearched(searchTerm)).map(item => {
-          return (
-            <div key={item.objectID}>
-              <span>
-                <a href={item.url}>{item.url}</a>
-              </span>
-              <span>{item.author}</span>
-              <span>{item.num_comments}</span>
-              <span>{item.points}</span>
+        <Table
+          list={list}
+          pattern={searchTerm}
+          onDismiss={this.onDismiss}
+        />
+      </div>
+    );
+  }
+}
 
-              <span>
-                <button onClick={() => this.onDismiss(item.objectID)}
-                        type="button"
-                >
-                  Dismiss
-                </button>
-              </span>
-            </div>
-          )
-        })}
+class Search extends Component {
+  render() {
+    const { value, onChange } = this.props;
+
+    return (
+      <form>
+        <input
+          type="text"
+          value={value}
+          onChange={onChange}
+        />
+      </form>
+    );
+  }
+}
+
+class Table extends Component {
+  render() {
+    const { list, pattern, onDismiss } = this.props;
+    return (
+      <div>
+        {
+          list
+            .filter(isSearched(pattern))
+            .map(item => {
+              return (
+              <div key={item.objectID}>
+                <span>
+                  <a href={item.url}>{item.title}</a>
+                </span>
+                <span>{item.author}</span>
+                <span>{item.num_comments}</span>
+                <span>{item.points}</span>
+                <span>
+                  <button
+                    onClick={() => onDismiss(item.objectID)}
+                    type="button"
+                  >
+                    Dismiss
+                  </button>
+                </span>
+              </div>
+              )
+            })
+        }
       </div>
     );
   }
