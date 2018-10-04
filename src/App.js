@@ -68,7 +68,9 @@ class App extends Component {
         <Search
           value={searchTerm}
           onChange={this.onSearchChange}
-        />
+        >
+          Search
+        </Search>
 
         <Table
           list={list}
@@ -82,11 +84,11 @@ class App extends Component {
 
 class Search extends Component {
   render() {
-    const { value, onChange } = this.props;
+    const { value, onChange, children } = this.props;
 
     return (
       <form>
-        <input
+        {children} <input
           type="text"
           value={value}
           onChange={onChange}
@@ -104,8 +106,7 @@ class Table extends Component {
         {
           list
             .filter(isSearched(pattern))
-            .map(item => {
-              return (
+            .map(item =>
               <div key={item.objectID}>
                 <span>
                   <a href={item.url}>{item.title}</a>
@@ -122,8 +123,7 @@ class Table extends Component {
                   </button>
                 </span>
               </div>
-              )
-            })
+            )
         }
       </div>
     );
