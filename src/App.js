@@ -9,25 +9,6 @@ const PARAM_SEARCH = 'query=';
 
 const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 
-// const list = [
-//   {
-//     title: 'React',
-//     url: 'https://facebook.github.io/react/',
-//     author: 'Jordan Walke',
-//     num_comments: 3,
-//     points: 4,
-//     objectID: 0,
-//   },
-//   {
-//     title: 'Redux',
-//     url: 'https://github.com/reactjs/redux',
-//     author: 'Dan Abramov, Andrew Clark',
-//     num_comments: 2,
-//     points: 5,
-//     objectID: 1,
-//   },
-// ];
-
 // readable way to write isSearched()
 /*
 function isSearched(searchTerm) {
@@ -73,10 +54,12 @@ class App extends Component {
   }
 
   onDismiss(id) {
-    const updatedList = this.state.list.filter(item => {
+    const updatedHits = this.state.result.hits.filter(item => {
       return item.objectID !== id;
     });
-    this.setState({ list: updatedList });
+    this.setState({
+      result: { ...this.state.result, hits: updatedHits } 
+    });
   }
 
   render() {
