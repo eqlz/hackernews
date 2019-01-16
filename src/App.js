@@ -21,6 +21,27 @@ const SORTS = {
   POINTS: list => sortBy(list, 'points').reverse()
 };
 
+const updateSearchTopStoriesState = (hits, page) => (prevState) => {
+  const {results, searchKey} = prevState;
+
+    const oldHits = results && results[searchKey]
+      ? results[searchKey].hits
+      : [];
+
+    const updatedHits = [
+      ...oldHits,
+      ...hits
+    ];
+
+    return {
+      results: {
+        ...results,
+        [searchKey]: {hits: updatedHits, page: page}
+      },
+      isLoading: false
+    };
+}
+
 class App extends Component {
   _isMounted = false;
 
@@ -66,24 +87,7 @@ class App extends Component {
     console.log('result from hackernews api: ', result);
 
     const {hits, page} = result;
-    const {results, searchKey} = this.state;
-
-    const oldHits = results && results[searchKey]
-      ? results[searchKey].hits
-      : [];
-
-    const updatedHits = [
-      ...oldHits,
-      ...hits
-    ];
-
-    this.setState({
-      results: {
-        ...results,
-        [searchKey]: {hits: updatedHits, page: page}
-      },
-      isLoading: false
-    });
+    this.setState(updateSearchTopStoriesState(hits, page));
   }
 
   onSearchChange(event) {
